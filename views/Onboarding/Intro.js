@@ -1,11 +1,13 @@
-/* eslint-disable max-len */
-import React from 'react';
+import React, { useState } from 'react';
 import {
+  Image,
   TouchableOpacity,
   StyleSheet,
   Text,
   View,
 } from 'react-native';
+import { CodeScanner } from '../../components';
+import theme from '../../theme';
 
 const styles = StyleSheet.create({
   container: {
@@ -24,6 +26,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     width: '100%',
     padding: 30,
+    marginBottom: 40,
   },
   headlineSmall: {
     textTransform: 'uppercase',
@@ -35,12 +38,13 @@ const styles = StyleSheet.create({
   paragraphText: {
     padding: 30,
     fontSize: 14,
+    textAlign: 'center',
+    width: 350,
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    margin: 20,
+  image: {
+    height: 100,
+    width: 100,
+    marginBottom: 40,
   },
   button: {
     width: '100%',
@@ -69,22 +73,35 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     marginTop: 20,
   },
+  paragraphScanner: {
+    textAlign: 'center',
+    marginTop: 10,
+    color: theme.color.green,
+  },
 });
 
 // eslint-disable-next-line react/prop-types
-const Intro = ({ navigateToNext = () => {}, navigateToPrevious }) => (
-  <View style={styles.container}>
-    <View style={styles.containerText}>
-      <Text style={styles.headlineSmall}>Worum geht es?</Text>
-      <Text style={styles.paragraphText}>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</Text>
-    </View>
-    <View style={styles.containerButton}>
-      <TouchableOpacity style={styles.button} onPress={navigateToNext}>
-        <Text style={styles.buttonText}>Los gehts</Text>
-      </TouchableOpacity>
-      <Text style={styles.paragraphTracking}>Tracking Code</Text>
-    </View>
-  </View>
-);
+const Intro = ({ navigateToNext = () => {} }) => {
+  const [isScanning, setIsScanning] = useState(false);
+  const [scannedData, setScannedData] = useState(undefined);
+  return isScanning
+    ? <CodeScanner onScanned={(data) => { setIsScanning(false); setScannedData(data); navigateToNext(); }} />
+    : (
+      <View style={styles.container}>
+        <View style={styles.containerText}>
+          <Image resizeMode="cover" style={styles.image} source={require('../../images/infected.png')} />
+          <Text style={styles.headlineSmall}>Worum geht es?</Text>
+          <Text style={styles.paragraphText}>Kontakte speichern, um Infektionsketten besser nachvollziehen zu können</Text>
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity style={styles.button} onPress={navigateToNext}>
+            <Text style={styles.buttonText}>Los geht's</Text>
+          </TouchableOpacity>
+          <Text style={styles.paragraphTracking}>Du hast bereits einen Tracking Code?</Text>
+          <Text onPress={() => { setIsScanning(true); }} style={styles.paragraphScanner}>Hier Code eingeben und direkt los legen.</Text>
+        </View>
+      </View>
+    );
+};
 
 export default Intro;

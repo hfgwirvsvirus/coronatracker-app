@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
   button: {},
 });
 
-export default function CodeScanner() {
+export default function CodeScanner({ onScanned = () => {} }) {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -42,6 +42,7 @@ export default function CodeScanner() {
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
     Alert.alert(`Der Code ${type} mit den Daten ${data} wurde gescannt!`);
+    onScanned(data);
   };
 
   if (hasPermission === null) {
