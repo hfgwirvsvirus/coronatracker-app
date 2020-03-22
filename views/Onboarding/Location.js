@@ -118,10 +118,10 @@ export default function Location({ navigateToNext = () => {} }) {
 
   // This tests the location permission and gets the current position.
   // Use this method to track the location in the background: https://docs.expo.io/versions/latest/sdk/location/#locationstartlocationupdatesasynctaskname-options
-  const getLocationAsync = async () => {
+  const requestLocation = async () => {
     const { status } = await Permissions.askAsync(Permissions.LOCATION);
     if (status !== 'granted') {
-      setError('Permission to access location was denied');
+      return setError('Permission to access location was denied');
     }
 
     const currentPosition = await ExpoLocation.getCurrentPositionAsync({});
@@ -129,15 +129,11 @@ export default function Location({ navigateToNext = () => {} }) {
     navigateToNext();
   };
 
-  const requestLocation = () => {
-
-  };
-
   useEffect(() => {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       setError('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
     } else {
-      getLocationAsync();
+      requestLocation();
     }
   }, []);
 
