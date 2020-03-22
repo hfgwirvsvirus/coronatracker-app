@@ -1,20 +1,24 @@
-import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View } from 'react-native';
+import React, { useEffect } from 'react';
+import {
+  Image, StyleSheet, Text, View,
+} from 'react-native';
 
-const Welcome = ({ navigateToNext = () => {}, navigateToPrevious }) => {
-  console.log(navigateToPrevious)
-    return (
-        <View style={styles.container}>
-            <View style={styles.content}>
-              <Text style={styles.title}>Titel!</Text>
-            </View>
-            <View style={styles.actions}>
-              <Button style={styles.button} title="Zurück" onPress={navigateToPrevious} disabled={!navigateToPrevious} />
-              <Button style={styles.button} title="Weiter" onPress={navigateToNext} />
-            </View>
-        </View>
-    );
-}
+const Welcome = ({ navigateToNext = () => {} }) => {
+  useEffect(() => {
+    setTimeout(() => {
+      navigateToNext();
+    }, 2000);
+  }, []);
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.content}>
+        <Image resizeMode="cover" style={styles.image} source={require('../../images/infected.png')} />
+        <Text style={styles.subtitle}>GRETEL</Text>
+      </View>
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -27,19 +31,17 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center'
+    alignItems: 'center',
   },
-  title: {
+  image: {
+    height: 250,
+    width: 250,
+  },
+  subtitle: {
     fontSize: 20,
     textAlign: 'center',
-    margin: 10,
+    marginTop: 40,
   },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    margin: 20
-  }
 });
 
 export default Welcome;
