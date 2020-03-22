@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   },
 });
 
-const Login = () => {
+const Login = ({ navigateToNext = () => {} }) => {
   StatusBar.setBarStyle('dark-content', true);
 
   const [mail, setMail] = useState('');
@@ -121,7 +121,7 @@ const Login = () => {
       <View style={styles.container}>
         <View style={styles.containerText}>
           <Text style={styles.headlineBig}>Willkommen bei revealVirus</Text>
-          <TextInput 
+          <TextInput
             style={styles.textInput}
             name="mail"
             onChangeText={(value) => {
@@ -146,7 +146,9 @@ const Login = () => {
           <TouchableOpacity style={styles.button} onPress={() => setLogin(true)}>
             <Text style={styles.buttonText}>Login</Text>
           </TouchableOpacity>
-          <Text style={styles.paragraphTracking}>Account erstellen</Text>
+          <TouchableOpacity onPress={navigateToNext}>
+            <Text style={styles.paragraphTracking}>Account erstellen</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
