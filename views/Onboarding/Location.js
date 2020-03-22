@@ -132,8 +132,6 @@ export default function Location({ navigateToNext = () => {} }) {
   useEffect(() => {
     if (Platform.OS === 'android' && !Constants.isDevice) {
       setError('Oops, this will not work on Sketch in an Android emulator. Try it on your device!');
-    } else {
-      requestLocation();
     }
   }, []);
 

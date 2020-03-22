@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
   },
 });
 
-async function askForPermission() {
+async function requestNotification() {
   const permission = await Permissions.askAsync(
     Permissions.NOTIFICATIONS,
   );
@@ -80,39 +80,25 @@ async function askForPermission() {
   return false;
 }
 
-const requestNotification = () => {};
 
 // eslint-disable-next-line react/prop-types
-const Notifications = ({ navigateToNext = () => {} }) => {
-  let isGranted = false;
-  useEffect(() => {
-    const getPermission = async () => {
-      isGranted = await askForPermission();
-      if (isGranted) { navigateToNext(); }
-    };
-    getPermission();
-  }, []);
-
-  return (
-    <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
-      {!isGranted && (
-        <View style={styles.container}>
-          <View style={styles.containerText}>
-            <Image resizeMode="center" style={styles.image} source={require('../../images/notification.png')} />
-            <Text style={styles.paragraphText}>Wir möchten Infektionsketten unterbrechen und im Ernstfall schnell reagieren. Dazu würden wir Dir eine Push Nachricht schicken, sobald du Kontakt mit einer infizierten Person hattest.</Text>
-          </View>
-          <View style={styles.containerButton}>
-            <TouchableOpacity style={styles.button} onPress={() => requestNotification()}>
-              <Text style={styles.buttonText}>Benachrichtigungen erlauben</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigateToNext()}>
-              <Text style={styles.paragraphSmall}>Überspringen</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
-      )}
+const Notifications = ({ navigateToNext = () => {} }) => (
+  <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
+    <View style={styles.container}>
+      <View style={styles.containerText}>
+        <Image resizeMode="center" style={styles.image} source={require('../../images/notification.png')} />
+        <Text style={styles.paragraphText}>Wir möchten Infektionsketten unterbrechen und im Ernstfall schnell reagieren. Dazu würden wir Dir eine Push Nachricht schicken, sobald du Kontakt mit einer infizierten Person hattest.</Text>
+      </View>
+      <View style={styles.containerButton}>
+        <TouchableOpacity style={styles.button} onPress={async () => { if (await requestNotification()) { navigateToNext(); } }}>
+          <Text style={styles.buttonText}>Benachrichtigungen erlauben</Text>
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigateToNext()}>
+          <Text style={styles.paragraphSmall}>Überspringen</Text>
+        </TouchableOpacity>
+      </View>
     </View>
-  );
-};
+  </View>
+);
 
 export default Notifications;
