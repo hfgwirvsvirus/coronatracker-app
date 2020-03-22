@@ -1,8 +1,34 @@
+/* eslint-disable max-len */
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, Button } from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Button,
+  Alert,
+} from 'react-native';
 import { BarCodeScanner } from 'expo-barcode-scanner';
 
-export default function CodeScanner () {
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  text: {
+    paddingBottom: 20,
+    fontSize: 20,
+  },
+  scanner: {
+    height: 300,
+    width: 300,
+    marginBottom: 20,
+  },
+  button: {},
+});
+
+export default function CodeScanner() {
   const [hasPermission, setHasPermission] = useState(null);
   const [scanned, setScanned] = useState(false);
 
@@ -15,7 +41,7 @@ export default function CodeScanner () {
 
   const handleBarCodeScanned = ({ type, data }) => {
     setScanned(true);
-    alert(`Der Code ${type} mit den Daten ${data} wurde gescannt!`);
+    Alert.alert(`Der Code ${type} mit den Daten ${data} wurde gescannt!`);
   };
 
   if (hasPermission === null) {
@@ -27,36 +53,16 @@ export default function CodeScanner () {
 
   return (
     <View style={styles.container}>
-    {!scanned && (
+      {!scanned && (
         <Text style={styles.text}>Bitte den QR-Code scannen</Text>
-    )}
+      )}
       <BarCodeScanner
         onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
         style={styles.scanner}
       />
-
       {scanned && (
-        <Button style={styles.button} title={'Wiederholen'} onPress={() => setScanned(false)} />
+        <Button style={styles.button} title="Wiederholen" onPress={() => setScanned(false)} />
       )}
     </View>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    alignItems: 'center',
-    justifyContent: 'center'
-  },
-  text: {
-    paddingBottom: 20,
-    fontSize: 20
-  },
-  scanner: {
-    height: 300,
-    width: 300,
-    marginBottom: 20
-  },
-  button: {}
-});

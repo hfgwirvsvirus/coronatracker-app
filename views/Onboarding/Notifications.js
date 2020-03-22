@@ -1,8 +1,74 @@
-import React, { useEffect, useState } from 'react';
+/* eslint-disable max-len */
+import React, { useEffect } from 'react';
 import {
-  Button, Platform, StyleSheet, Text, View,
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
 import * as Permissions from 'expo-permissions';
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  containerText: {
+    flex: 0.75,
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    width: '100%',
+  },
+  containerButton: {
+    flex: 0.25,
+    width: '100%',
+    padding: 30,
+  },
+  paragraphText: {
+    marginTop: 60,
+    marginBottom: 40,
+    paddingLeft: 30,
+    paddingRight: 30,
+    fontSize: 16,
+    textAlign: 'center',
+  },
+  button: {
+    borderRadius: 6,
+    paddingTop: 20,
+    paddingBottom: 20,
+    paddingLeft: 50,
+    paddingRight: 50,
+    backgroundColor: '#00DC9A',
+    shadowColor: 'rgba(0, 0, 0, 0.1)',
+    shadowOpacity: 0.8,
+    elevation: 6,
+    shadowRadius: 15,
+    shadowOffset: {
+      width: 8,
+      height: 20,
+    },
+  },
+  buttonText: {
+    alignSelf: 'stretch',
+    textAlign: 'center',
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '600',
+  },
+  paragraphSmall: {
+    textAlign: 'center',
+    marginTop: 20,
+    color: '#000',
+  },
+  image: {
+    marginTop: 100,
+    height: 300,
+    width: 300,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
 
 async function askForPermission() {
   const permission = await Permissions.askAsync(
@@ -14,53 +80,39 @@ async function askForPermission() {
   return false;
 }
 
+const requestNotification = () => {};
+
+// eslint-disable-next-line react/prop-types
 const Notifications = ({ navigateToNext = () => {} }) => {
+  let isGranted = false;
   useEffect(() => {
     const getPermission = async () => {
-      const isGranted = await askForPermission();
+      isGranted = await askForPermission();
       if (isGranted) { navigateToNext(); }
     };
     getPermission();
   }, []);
 
   return (
-    <View style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Wir möchten Infektionsketten unterbrechen und im Ernstfall schnell reagieren. Dazu würden wir Dir eine Push Nachricht schicken, sobald du Kontakt mit einer infizierten Person hattest.</Text>
-        <Button style={styles.button} title="Benachrichtigungen aktivieren" />
-      </View>
-      <View style={styles.actions}>
-        <Button style={styles.button} title="Zurück" />
-        <Button style={styles.button} title="Weiter" />
-      </View>
+    <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
+      {!isGranted && (
+        <View style={styles.container}>
+          <View style={styles.containerText}>
+            <Image resizeMode="center" style={styles.image} source={require('../../images/notification.png')} />
+            <Text style={styles.paragraphText}>Wir möchten Infektionsketten unterbrechen und im Ernstfall schnell reagieren. Dazu würden wir Dir eine Push Nachricht schicken, sobald du Kontakt mit einer infizierten Person hattest.</Text>
+          </View>
+          <View style={styles.containerButton}>
+            <TouchableOpacity style={styles.button} onPress={() => requestNotification()}>
+              <Text style={styles.buttonText}>Benachrichtigungen erlauben</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigateToNext()}>
+              <Text style={styles.paragraphSmall}>Überspringen</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+      )}
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    backgroundColor: '#F5FCFF',
-  },
-  content: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  title: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  actions: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    width: '90%',
-    margin: 20,
-  },
-});
 
 export default Notifications;

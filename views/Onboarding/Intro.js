@@ -1,22 +1,11 @@
+/* eslint-disable max-len */
 import React from 'react';
 import {
-  TouchableOpacity, StyleSheet, Text, View,
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  View,
 } from 'react-native';
-
-const Intro = ({ navigateToNext = () => {}, navigateToPrevious }) => (
-  <View style={styles.container}>
-    <View style={styles.containerText}>
-      <Text style={styles.headlineSmall}>Worum geht es?</Text>
-      <Text style={styles.paragraphText}>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</Text>
-    </View>
-    <View style={styles.containerButton}>
-      <TouchableOpacity style={styles.button} onPress={navigateToNext}>
-        <Text style={styles.buttonText}>Los gehts</Text>
-      </TouchableOpacity>
-      <Text style={styles.paragraphTracking}>Tracking Code</Text>
-    </View>
-  </View>
-);
 
 const styles = StyleSheet.create({
   container: {
@@ -32,6 +21,7 @@ const styles = StyleSheet.create({
   },
   containerButton: {
     flex: 0.25,
+    flexDirection: 'column',
     width: '100%',
     padding: 30,
   },
@@ -75,6 +65,26 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
   },
+  paragraphTracking: {
+    textAlign: 'center',
+    marginTop: 20,
+  },
 });
+
+// eslint-disable-next-line react/prop-types
+const Intro = ({ navigateToNext = () => {}, navigateToPrevious }) => (
+  <View style={styles.container}>
+    <View style={styles.containerText}>
+      <Text style={styles.headlineSmall}>Worum geht es?</Text>
+      <Text style={styles.paragraphText}>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum.</Text>
+    </View>
+    <View style={styles.containerButton}>
+      <TouchableOpacity style={styles.button} onPress={navigateToNext}>
+        <Text style={styles.buttonText}>Los gehts</Text>
+      </TouchableOpacity>
+      <Text style={styles.paragraphTracking}>Tracking Code</Text>
+    </View>
+  </View>
+);
 
 export default Intro;

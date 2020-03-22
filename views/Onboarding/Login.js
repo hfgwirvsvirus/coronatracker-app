@@ -1,37 +1,15 @@
-import React, { useState } from 'react';
+import React, {
+  useState,
+} from 'react';
 import {
-  StatusBar, StyleSheet, Text, View, TextInput, TouchableOpacity,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Alert,
 } from 'react-native';
-
-export default function Login() {
-  StatusBar.setBarStyle('dark-content', true);
-
-  const [mail, onChangeMail] = useState('E-Mail');
-  const [pass, onChangePass] = useState('Passwort');
-
-  const setLogin = ({ mail, pass }) => {
-    alert(`Die Mail ${mail} mit dem Passwort ${pass} wurde registriert!`);
-  };
-
-  return (
-    <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
-      <View style={styles.container}>
-        <View style={styles.containerText}>
-          <Text style={styles.headlineBig}>Willkommen bei revealVirus</Text>
-          <TextInput style={styles.textInput} name="mail" onChangeText={(mail) => onChangeMail(mail)} value={mail} placeholder="E-Mail" />
-          <Text style={{ color: '#000' }}>{mail, pass, onChangeMail, onChangePass}</Text>
-          <TextInput secureTextEntry style={styles.textInput} name="pass" onChangeText={(pass) => onChangePass(pass)} value={pass} placeholder="Password" />
-        </View>
-        <View style={styles.containerButton}>
-          <TouchableOpacity style={styles.button} onPress={() => setLogin(true)}>
-            <Text style={styles.buttonText}>Login</Text>
-          </TouchableOpacity>
-          <Text style={styles.paragraphTracking}>Account erstellen</Text>
-        </View>
-      </View>
-    </View>
-  );
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -80,8 +58,8 @@ const styles = StyleSheet.create({
     borderRadius: 6,
     paddingTop: 20,
     paddingBottom: 20,
-    paddingLeft: 100,
-    paddingRight: 100,
+    paddingLeft: 50,
+    paddingRight: 50,
     backgroundColor: '#00DC9A',
     shadowColor: 'rgba(0, 0, 0, 0.1)',
     shadowOpacity: 0.8,
@@ -97,6 +75,7 @@ const styles = StyleSheet.create({
     color: '#FFFFFF',
     fontSize: 16,
     fontWeight: '600',
+    width: '100%',
   },
   paragraphTracking: {
     textAlign: 'center',
@@ -117,3 +96,61 @@ const styles = StyleSheet.create({
     marginRight: 30,
   },
 });
+
+const Login = () => {
+  StatusBar.setBarStyle('dark-content', true);
+
+  const [mail, setMail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const validateEmail = (email) => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+  };
+
+  const setLogin = () => {
+    const hasInput = mail.length > 0 && pass.length > 0;
+    const correctMail = validateEmail(mail);
+    if (hasInput && correctMail) {
+      Alert.alert(`Die Mail ${mail} mit dem Passwort ${pass} wurde registriert!`);
+    }
+  };
+
+  return (
+    <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
+      <View style={styles.container}>
+        <View style={styles.containerText}>
+          <Text style={styles.headlineBig}>Willkommen bei revealVirus</Text>
+          <TextInput 
+            style={styles.textInput}
+            name="mail"
+            onChangeText={(value) => {
+              setMail(value);
+            }}
+            value={mail}
+            placeholder="E-Mail"
+            keyboardType="email-address"
+          />
+          <TextInput
+            secureTextEntry
+            style={styles.textInput}
+            name="pass"
+            onChangeText={(value) => {
+              setPass(value);
+            }}
+            value={pass}
+            placeholder="Passwort"
+          />
+        </View>
+        <View style={styles.containerButton}>
+          <TouchableOpacity style={styles.button} onPress={() => setLogin(true)}>
+            <Text style={styles.buttonText}>Login</Text>
+          </TouchableOpacity>
+          <Text style={styles.paragraphTracking}>Account erstellen</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+export default Login;
