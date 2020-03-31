@@ -83,7 +83,7 @@ async function requestNotification() {
 
 // eslint-disable-next-line react/prop-types
 const Notifications = ({ navigateToNext = () => {} }) => (
-  <View style={{ flex: 1, backgroundColor: '#E5E5E5' }}>
+  <View style={{ flex: 1}}>
     <View style={styles.container}>
       <View style={styles.containerText}>
         <Image resizeMode="center" style={styles.image} source={require('../../images/notification.png')} />

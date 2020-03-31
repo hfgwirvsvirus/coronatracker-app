@@ -2,7 +2,6 @@ import React, {
   useState,
 } from 'react';
 import {
-  StatusBar,
   StyleSheet,
   Text,
   View,
@@ -98,7 +97,6 @@ const styles = StyleSheet.create({
 });
 
 const Login = ({ navigateToNext = () => {} }) => {
-  StatusBar.setBarStyle('dark-content', true);
 
   const [mail, setMail] = useState('');
   const [pass, setPass] = useState('');

@@ -1,9 +1,10 @@
 import 'react-native-gesture-handler';
 import React, { useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, StatusBar } from 'react-native';
 import { Onboarding, Login, Profile } from './views';
 
 export default function App() {
+  StatusBar.setBarStyle('dark-content', true);
   // Here we should check whether the user has completed the Onboarding before.
   const [activeView, setActiveView] = useState('Onboarding');
 
